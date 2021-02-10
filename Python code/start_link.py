@@ -1,5 +1,5 @@
-visited = [False for _ in range(10)]
-arr = [ -1 for _ in range(11)]
+visited = [False for _ in range(21)]
+arr = [ -1 for _ in range(21)]
 memberList = []
 def memberCheck(now:int, N):
     global visited
