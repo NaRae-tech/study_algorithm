@@ -9,6 +9,6 @@ for _ in range(T):
         item.append(kind)
     sortItem = Counter(item)
     result =1
-    for i in range(N):
+    for i in sortItem:
         result*=(sortItem[i]+1)
     print(result-1)
