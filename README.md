@@ -7,10 +7,12 @@
   + chapter number-problem number_문제 제목
 
 + DS_ : Python 기반 자료구조 공부 후 예제 코드
- 
+  + chapter number-problemnumber_문제제목
+  + L_problem number_문제내용 혹은 문제제목
 --------------------------
 
 ### 문제에 대한 풀이는 아래 블로그 참조
-+ 책정보 : https://book.naver.com/bookdb/book_detail.nhn?bid=16439154
++ 책1 : 이것이 취업을 위한 코딩테스트다 with python
++ 책정보 : 파이썬 알고리즘 인터뷰
 + BOJ : https://www.acmicpc.net/
 + 개인 블로그 : https://rookie-developer.tistory.com/
