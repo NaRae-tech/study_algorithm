@@ -10,7 +10,20 @@ def solution(people, limit):
         maxi -= 1
     return answer
 
+from collections import deque
+def solutions(people, limit):
+    deqp = deque(sorted(people))
+    answer = 0
+    while(len(deqp)>0):
+        answer+=1
+        if(len(deqp)>1):
+            if(deqp[0]+deqp[-1]<=limit):
+                deqp.popleft()
+            deqp.pop()
+        else:
+            deqp.pop()
+    return answer
 
 people = [70,50,80,50]
 limit = 100
-print(solution(people, limit))
+print(solutions(people, limit))
