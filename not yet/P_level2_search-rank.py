@@ -1,30 +1,35 @@
+from itertools import combinations
 def solution(info, query):
     answer = []
-    people = [list(information.split(' ')) for information in info]
-    people.sort(key=lambda x:int(x[4]))
+
+    people = {}
+    for i in range(len(info)):
+        information = info[i].split(" ")
+        for j in range(5):
+            com = list(combinations([0,1,2,3],j))
+            for c in com:
+                temp = information[:-1].copy()
+                for d in c:
+                    temp[d] = "-"
+                case = "/".join(temp)
+                if case not in people:
+                    people[case] = [int(information[4])]
+                else:
+                    people[case].append(int(information[4]))
 
     for q in query:
-        c = q.replace(' and', '').split(' ')
-        left = 0
-        right = len(people)-1
-
-        while left<right:
-            middle = (left + right) // 2
-            if int(people[middle][4])==int(c[4]):
-                break
-            elif int(people[middle][4])>int(c[4]):
-                right=middle
-            elif int(people[middle][4])<int(c[4]):
-                left =middle+1
-
         cnt = 0
-        for i in range(middle, len(people)):
-            if ((c[0] == '-' or c[0] == people[i][0])
-                    and (c[1] == '-' or c[1] == people[i][1])
-                    and (c[2] == '-' or c[2] == people[i][2])
-                    and (c[3] == '-' or c[3] == people[i][3])
-                    and int(c[4])<=int(people[i][4])):
-                cnt+=1
+        que = q.replace(" and "," ").split(" ")
+        condition = "/".join(que[:-1])
+        if condition in people:
+            value = sorted(people[condition])
+            left, right = 0, len(value)
+            while left!= right and left<len(value):
+                if value[(left+right)//2] >= int(que[-1]):
+                    right = (left+right)//2
+                else:
+                    left = (left+right)//2+1
+            cnt = len(value)-left
         answer.append(cnt)
 
     return answer
