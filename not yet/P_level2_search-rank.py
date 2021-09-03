@@ -22,9 +22,10 @@ def solution(info, query):
         que = q.replace(" and "," ").split(" ")
         condition = "/".join(que[:-1])
         if condition in people:
-            value = people[condition]
+            value = sorted(people[condition])
             if value:
-                cnt = bisect_left(scores, int(que[-1]))
+                cnt = len(value) - bisect_left(value, int(que[-1]))
+                print(condition, value, cnt)
         answer.append(cnt)
 
     return answer
