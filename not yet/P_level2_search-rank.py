@@ -1,4 +1,5 @@
 from itertools import combinations
+from bisect import bisect_left
 def solution(info, query):
     answer = []
 
@@ -6,8 +7,7 @@ def solution(info, query):
     for i in range(len(info)):
         information = info[i].split(" ")
         for j in range(5):
-            com = list(combinations([0,1,2,3],j))
-            for c in com:
+            for c in combinations([0,1,2,3],j):
                 temp = information[:-1].copy()
                 for d in c:
                     temp[d] = "-"
@@ -22,14 +22,9 @@ def solution(info, query):
         que = q.replace(" and "," ").split(" ")
         condition = "/".join(que[:-1])
         if condition in people:
-            value = sorted(people[condition])
-            left, right = 0, len(value)
-            while left!= right and left<len(value):
-                if value[(left+right)//2] >= int(que[-1]):
-                    right = (left+right)//2
-                else:
-                    left = (left+right)//2+1
-            cnt = len(value)-left
+            value = people[condition]
+            if value:
+                cnt = bisect_left(scores, int(que[-1]))
         answer.append(cnt)
 
     return answer
