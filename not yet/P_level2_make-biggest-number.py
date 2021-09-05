@@ -1,27 +1,21 @@
-def first(num):
-    return int(str(num)[0])
+def solution(number, k):
+    answer = []
+    for i in range(len(number)):
+        if k<0:
+            answer.append(number[i])
+        else:
+            if (not answer) or (answer[-1]>=number[i]):
+                answer.append(number[i])
+            else:
+                for j in range(len(answer)):
+                    if answer[-1]<number[i] and k>0:
+                        answer.pop()
+                        k-=1
+                answer.append(number[i])
+            print(number[i], answer)
+    answer = list(map(str,answer))
+    return "".join(answer)
 
-def second(num):
-    snum = str(num)
-    if len(snum)==1:
-        return int(snum[0])
-    else:
-        return int(snum[1])
-
-def third(num):
-    snum = str(num)
-    if len(snum) == 1:
-        return int(snum[0])
-    elif len(snum)==2:
-        return int(snum[1])
-    else:
-        return int(snum[2])
-
-def solution(numbers):
-    numbers.sort(key=lambda x:(first(x),second(x),third(x)), reverse=True)
-    numbers = list(map(str,numbers))
-    print(numbers)
-    return ''.join(numbers)
-
-numbers=[99,999,9,998,989]
-print(solution(numbers))
+number = "4177252841"
+k = 4
+print(solution(number,k))
