@@ -16,18 +16,19 @@ def input_num():
         print("2자리 자연수가 아닙니다. 다시 입력하세요.")
         return input_num()
 def mul(num1, num2):
-    print("  %d"%num1)
-    print("X %d"%num2)
+    print("%4s"%num1)
+    print("X%3s"%num2)
     print("-"*4)
-    print("%4d"%(num1*(num2%10)))
-    print("%d "%(num1*(num2//10)))
+    print("%4s"%(num1*(num2%10)))
+    print("%3s "%(num1*(num2//10)))
     print("-" * 4)
-    return (num1*(num2//10))*10 + (num1*(num2%10))
+    print("%4s"%num1*num2)
 def ex2():
     num = [0,0]
     for i in [1,2]:
         print("%d. %d번째 2자리 자연수 출력"%(i,i))
         num[i-1] = input_num()
+    print("3. 곱셈 결과 출력")
     return ("%4d"%mul(num[0], num[1]))
 
 #function exercise3
@@ -57,7 +58,12 @@ def grade_calculator(score_list):
     print("최저점: 학생%d %d"%(score_list[0][0], score_list[0][1]))
 
 def ex3():
-    n = int(input("학생 수를 입력하세요: "))
+    while True:
+        n = int(input("학생 수를 입력하세요: "))
+        if 0<n and n<=10:
+            break
+        else:
+            print("학생 수는 1명 이상 10명 이하여야 합니다.")
     score_list = student_grade(n)
     print("학생 점수 :",list(score_list.values()))
     grade_calculator(score_list)
@@ -89,12 +95,12 @@ def fEx1():
     f.close()
 
     f = open("C:/Users/ynr87/PycharmProjects/baekjoon/test.txt",'r')
-    f2 = open("C:/Users/ynr87/PycharmProjects/baekjoon/test_copy.txt", 'a')
+    f2 = open("C:/Users/ynr87/PycharmProjects/baekjoon/test_copy.txt", 'w')
     while True:
         line = f.readline()
-        f2.write(line)
         if not line:
             break
+        f2.write(line)
     f.close()
     f2.close()
 
@@ -121,34 +127,35 @@ def fEx2():
 #file handling exercise3
 def search(name):
     f = open("C:/Users/ynr87/PycharmProjects/baekjoon/student.txt",'r')
-    flag = False
-    while True:
-        line = f.readline()
-        info = line.split("|")
-        if name == info[0]:
-            print("average:",info[4], ",grade:",info[5])
-            flag = True
+    line = f.readlines()
+    for info in line:
+        if name in info:
+            a = line.split("|")
+            print("average:%s, grade:%s"%(a[4],a[5]))
+            f.close()
             break
-        if not line:
-            break
-    if not flag:
-        print("없음")
+    print("없음")
+    f.close()
 
 #class exerciese1
 class Queue:
-    queue = []
+    def __init__(self):
+        self.queue = []
     def isEmpty(self):
         return (len(self.queue) == 0)
     def enqueue(self, num):
         self.queue.append(num)
     def dequeue(self):
-        if len(self.queue) != 0:
-            self.queue.pop()
+        dq_data = None
+        if not self.isEmpty():
+            dq_data = self.queue[0]
+            self.queue = self.queue[1:]
+        return dq_data
     def peek(self):
-        if len(self.queue) != 0:
-            return self.queue[0]
-        else:
-            return "None"
+        pk_data = None
+        if not self.isEmpty():
+            pk_data = self.queue[0]
+        return pk_data
     def queueSize(self):
         return len(self.queue)
 
@@ -170,13 +177,15 @@ def clEx3():
 
 #class exercise2
 class Shelf:
-    box = [[],[],[],[]]
+    def __init__(self):
+        self.box = [[],[],[],[]]
     def levelSize(self, num):
-        return len(self.box[num])
+        n = len(self.box[num-1])
+        return (n if n>0 else 0)
     def isFull(self, num):
-        return (True if self.levelSize(num) == 4 else False)
+        return (True if len(self.box[num]) == 4 else False)
     def isEmpty(self, num):
-        return (True if self.levelSize(num)== 0 else False)
+        return (True if len(self.box[num])== 0 else False)
     def addNum(self,num):
         floor = num%4
         if self.isFull(floor):
@@ -185,10 +194,14 @@ class Shelf:
             self.box[floor].append(num)
     def delNum(self,num):
         floor = -num-1
+        floor_size = self.levelSize(-num)
+        pd = None
         if self.isEmpty(floor):
             print("%d층은 비어서 제거할 숫자가 없습니다." %(floor+1))
         else:
-            self.box[floor].pop()
+            pd = self.box[floor][floor_size-1]
+            self.box[floor] = self.box[floor][:floor_size-1]
+        return pd
 
 def clEx2():
     s = Shelf()
@@ -206,6 +219,7 @@ def clEx2():
         print("--> 현재 box 상태 : ",s.box)
 
 #class exercise3
+"""
 class Square:
     def __init__(self, x, y, length):
         self.X = x
@@ -247,5 +261,54 @@ def clEx3():
         print("두 번째 정사각형의 좌표, 넓이 : ", [x2,y2],l2**2)
         ca = CommonArea(s1,s2)
         print("두 정사각형의 공통 넓이 : ",ca.area)
+"""
+import math
+class Square:
+    def __init__(self,cx,cy,cr):
+        self.cx = cx
+        self.cy = cy
+        self.cr = cr
+    def center(self):
+        return (self.cx,self.cy)
+    def width(self):
+        w = self.cr**2
+        return w
+class Common_area(Square):
+    def compute_common_area(self,other):
+        hr = self.cr/2
+        otr = other.cr/2
+        x1,y1 = self.cx-hr, self.cy+hr
+        x2, y2 = self.cx + hr, self.cy + hr
+        x3, y3 = other.cx - otr, self.cy + otr
+        x4, y4 = self.cx +otr, self.cy + otr
 
-clEx3()
+        if x2<x3 or x1>x4 or y2>y3 or y1<y4:
+            return 0
+        left_up_x = max(x1,x3)
+        left_up_y = min(y1,y3)
+        right_down_x = min(x2,x4)
+        right_down_y = max(y2,y4)
+
+        width = right_down_x-left_up_x
+        height = right_down_y-left_up_y
+        return abs(width*height)
+
+def clEx3():
+    for i in range(2):
+        print("첫 번째 정사각형의 중심좌표와 한 변의 길이를 입력하세요.")
+        x1 = int(input("X좌표 : "))
+        y1 = int(input("Y좌표 : "))
+        l1 = int(input("한 변의 길이 : "))
+        s1 = Common_area(x1, y1, l1)
+
+        print("\n두 번째 정사각형의 중심좌표와 한 변의 길이를 입력하세요.")
+        x2 = int(input("X좌표 : "))
+        y2 = int(input("Y좌표 : "))
+        l2 = int(input("한 변의 길이 : "))
+        s2 = Common_area(x2, y2, l2)
+
+        print("첫 번째 정사각형의 좌표, 넓이 : ", s1.center(), s1.width())
+        print("두 번째 정사각형의 좌표, 넓이 : ", s2.center(), s2.width())
+        print("두 정사각형의 공통 넓이 : {0:.2f}".format(s1.compute_common_area(s2)))
+        if s1.compute_common_area(s2) == 0:
+            print("겹치는 부분이 없습니다.")

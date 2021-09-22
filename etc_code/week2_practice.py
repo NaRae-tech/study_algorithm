@@ -6,9 +6,9 @@ def cond_ex1():
 
     if pointA == pointB:
         print("same points")
-    elif pointA[0] == pointB[0]:
+    elif pointA[0] == pointB[0] and pointA[1] == -1*pointB[1]:
         print("Y-axis symmetry")
-    elif pointA[1] == pointB[1]:
+    elif pointA[1] == pointB[1] and pointA[0] == -1*pointB[0]:
         print("X-axis symmetry")
     elif pointA[0]*-1 == pointB[0] and pointA[1]*-1==pointB[1]:
         print("Origin symmetry")
@@ -121,7 +121,10 @@ def loop_ex4():
 
 def loop_ex5():
     l = [[1, 2], [5, 4], [6, 6], [7, 8], [9, 10]]
+    """
     newone = []
     for i in range(len(l)):
         newone.extend(l[i])
-    print(newone)
+    """
+    newone = [j for i in l for j in i]
+    return newone
